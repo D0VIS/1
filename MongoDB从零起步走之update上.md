@@ -61,6 +61,7 @@ $inc指定是对数字的增减操作，count指定操作对象，1指定步长
 ###$addToSet & $each###
 用$addToSet更新可以避免重复，将它与$each组合起来，可以一次性添加多条（就算后添加的值已存在也没有关系）
 > db.user.update({"name":"qianjiahao"},{"$addToSet":{"hobby":{"$each":["singing","eating","dancing"]}}})
+
 > { "_id" : ObjectId("55082691591555a6c35dd698"), "name" : "qianjiahao", "email" : "example@example.com", "hobby" : [ "swimming", "running", "reading", "sleeping", "singing", "eating", "dancing" ] }
 
 ***
@@ -79,10 +80,12 @@ $inc指定是对数字的增减操作，count指定操作对象，1指定步长
 ###定位修改器###
 如果要操作数组中的值，可以用值在数组中的位置当做参数来删除
 > db.user.update({"name":"qianjiahao"},{"$set":{"hobby.0":"crying"}})
-{ "_id" : ObjectId("55082691591555a6c35dd698"), "name" : "qianjiahao", "email" : "example@example.com", "hobby" : [ "crying", "running", "reading", "sleeping", "singing", "eating", "dancing" ] }
+
+> { "_id" : ObjectId("55082691591555a6c35dd698"), "name" : "qianjiahao", "email" : "example@example.com", "hobby" : [ "crying", "running", "reading", "sleeping", "singing", "eating", "dancing" ] }
 
 现在哭成了主要爱好了，这不行，咱得改了，但是如果不事先去查，并不知道哭是这个hobby数组的第几个值，MongoDB为我们考虑到了这点，使用$来代替位置。
 > db.user.update({"hobby":"crying"},{"$set":{"hobby.$":"smiling"}})
+
 > { "_id" : ObjectId("55082691591555a6c35dd698"), "name" : "qianjiahao", "email" : "example@example.com", "hobby" : [ "smiling", "running", "reading", "sleeping", "singing", "eating", "dancing" ] }
 
 现在破涕为笑了，笑一笑，挺好~
