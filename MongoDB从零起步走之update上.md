@@ -48,7 +48,7 @@ $inc指定是对数字的增减操作，count指定操作对象，1指定步长
 
 ***
 
-###$push$$$
+###$push###
 数组修改器，既然名字都这样叫了，那么这个修改器就只能对数组进行操作啦。
 > db.user.update({"name":"qianjiahao"},{"$push":{"hobby":"sleeping"}})
 
