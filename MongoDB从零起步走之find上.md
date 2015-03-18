@@ -56,62 +56,47 @@ $ne表示不相等
 ###OR查询###
 ####$in####
 $in可以查询一个键的多个值
-举例，每个人有很多不同的爱好，
-> db.user.find()
+举例，每个人有爱好，假定为一个,数据太多，咱们用第二个参数来过滤一下
+> db.user.find({},{"_id":0})
+{ "hobby" : "swimming", "gender" : "female" }
+{ "hobby" : "dancing", "gender" : "male" }
+{ "hobby" : "singing", "gender" : "male" }
 
-{ "_id" : ObjectId("55090f8008fa61313b5a8232"), "name" : "william", "hobby" : [ "swimming", "running" ] }
+我们想查询喜欢dancing和swimming和的人，可以得到如下结果
+> db.user.find({"hobby":{"$in":["dancing","swimming"]}},{"_id":0})
 
-{ "_id" : ObjectId("55090f9408fa61313b5a8233"), "name" : "jack", "hobby" : [ "swimming", "singing" ] }
+{ "hobby" : "swimming", "gender" : "female" }
+{ "hobby" : "dancing", "gender" : "male" }
+若只查询会跳舞的人
+> db.user.find({"hobby":{"$in":["dancing"]}},{"_id":0})
 
-{ "_id" : ObjectId("55090fac08fa61313b5a8234"), "name" : "tom", "hobby" : [ "swimming", "running", "dancing" ] }
-
-数据太多，咱们用第二个参数来过滤一下
-> db.user.find({},{"_id":0,"name":0})
-
-{ "hobby" : [ "swimming", "running" ] }
-{ "hobby" : [ "swimming", "singing" ] }
-{ "hobby" : [ "swimming", "running", "dancing" ] }
-
-这下看的清楚了一些，我们想查询喜欢swimming和dancing的人，可以得到如下结果
-> db.user.find({"hobby":{"$in":["swimming","dancing"]}},{"_id":0,"name":0})
-
-{ "hobby" : [ "swimming", "running" ] }
-{ "hobby" : [ "swimming", "singing" ] }
-{ "hobby" : [ "swimming", "running", "dancing" ] }
-我们会发现满足其一就可以被查询到，也就是说这是个并集
-现在我们只要查询dancing的人
-> db.user.find({"hobby":{"$in":["dancing"]}},{"_id":0,"name":0})
-
-{ "hobby" : [ "swimming", "running", "dancing" ] }
+{ "hobby" : "dancing", "gender" : "male" }
 
 既然$in,那么与之相对的就$nin,可以查询到不包括指明信息的文档
 
 ###$or####
-$in 是对单个键进行的查询，那么，对多个键呢，这时就要用到$or查询了，改写刚刚的user，为其添加gender键
-> db.user.find({},{"_id":0,"name":0})
+我们再添加一个游泳的人，并用$in查询游泳的人
+> db.user.find({"hobby":{"$in":["swimming"]}},{"_id":0})
+{ "hobby" : "swimming", "gender" : "female" }
+{ "hobby" : "swimming", "gender" : "male" }
 
-{ "hobby" : [ "swimming", "running" ], "gender" : "male" }
-{ "hobby" : [ "swimming", "singing" ], "gender" : "female" }
-{ "hobby" : [ "swimming", "running", "dancing" ], "gender" : "female" }
-
-使用$or查询
-> db.user.find({"$or":[{"hobby":"dancing"},{"gender":"female"}]},{"_id":0,"name":0})
-
-{ "hobby" : [ "swimming", "singing" ], "gender" : "female" }
-{ "hobby" : [ "swimming", "running", "dancing" ], "gender" : "female" }
-
-两条数据，第一条满足女性，第二条满足会跳舞和女性
-
+$in 是对单个键进行的查询，用$or查询可以匹配多个键
+> db.user.find({"$or":[{"hobby":"swimming"},{"gender":"female"}]},{"_id":0})
+{ "hobby" : "swimming", "gender" : "female" }
+{ "hobby" : "swimming", "gender" : "male" }
 现在，我们把查询条件的female改成male
-> db.user.find({"$or":[{"hobby":{"$in":["dancing"]}},{"gender":"male"}]},{"_id":0,"name":0})
+> db.user.find({"$or":[{"hobby":"swimming"},{"gender":"male"}]},{"_id":0})
 
-{ "hobby" : [ "swimming", "running" ], "gender" : "male" }
-{ "hobby" : [ "swimming", "running", "dancing" ], "gender" : "female" }
-
-可以看到第一条满足男性，第二条满足会跳舞和女性
+{ "hobby" : "swimming", "gender" : "female" }
+{ "hobby" : "dancing", "gender" : "male" }
+{ "hobby" : "singing", "gender" : "male" }
+{ "hobby" : "singing", "gender" : "male" }
+{ "hobby" : "dancing", "gender" : "male" }
+{ "hobby" : "swimming", "gender" : "male" }
 
 现在我们可以得出结论，OR查询（$in 和 $or）是尽可能的获取更多的匹配项。
-举个夸张的例子，方便记忆：就是沾边的都算亲戚，就算是三舅的七姑的妹妹的女儿的哥哥，都算亲戚！
+OR查询其实是取并集，满足其中一条及以上，即可被查询到。
+
 
 ####$not####
 not 是元条件句，可以用于任何条件之上，意为取反
