@@ -1,7 +1,7 @@
 MongoDB从零起步走之insert、remove
 ----------------
 
-启动MongoDB（bin目录下）
+连接MongoDB（bin目录下）
 >./mongo
 
 如果觉得shell里空空的可以输入help，在刷屏的同时大致了解下有哪些方法
@@ -12,7 +12,8 @@ MongoDB从零起步走之insert、remove
 
 咱们确认下，数据库有没有创建成功
 >show dbs
-template  0.078GB
+
+> template  0.078GB
 
 ###insert###
 
