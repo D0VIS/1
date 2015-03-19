@@ -58,14 +58,18 @@ $ne表示不相等
 $in可以查询一个键的多个值
 举例，每个人有爱好，假定为一个,数据太多，咱们用第二个参数来过滤一下
 > db.user.find({},{"_id":0})
+
 { "hobby" : "swimming", "gender" : "female" }
+
 { "hobby" : "dancing", "gender" : "male" }
+
 { "hobby" : "singing", "gender" : "male" }
 
 我们想查询喜欢dancing和swimming和的人，可以得到如下结果
 > db.user.find({"hobby":{"$in":["dancing","swimming"]}},{"_id":0})
 
 { "hobby" : "swimming", "gender" : "female" }
+
 { "hobby" : "dancing", "gender" : "male" }
 若只查询会跳舞的人
 > db.user.find({"hobby":{"$in":["dancing"]}},{"_id":0})
@@ -77,21 +81,30 @@ $in可以查询一个键的多个值
 ###$or####
 我们再添加一个游泳的人，并用$in查询游泳的人
 > db.user.find({"hobby":{"$in":["swimming"]}},{"_id":0})
+
 { "hobby" : "swimming", "gender" : "female" }
+
 { "hobby" : "swimming", "gender" : "male" }
 
 $in 是对单个键进行的查询，用$or查询可以匹配多个键
 > db.user.find({"$or":[{"hobby":"swimming"},{"gender":"female"}]},{"_id":0})
+
 { "hobby" : "swimming", "gender" : "female" }
+
 { "hobby" : "swimming", "gender" : "male" }
 现在，我们把查询条件的female改成male
 > db.user.find({"$or":[{"hobby":"swimming"},{"gender":"male"}]},{"_id":0})
 
 { "hobby" : "swimming", "gender" : "female" }
+
 { "hobby" : "dancing", "gender" : "male" }
+
 { "hobby" : "singing", "gender" : "male" }
+
 { "hobby" : "singing", "gender" : "male" }
+
 { "hobby" : "dancing", "gender" : "male" }
+
 { "hobby" : "swimming", "gender" : "male" }
 
 现在我们可以得出结论，OR查询（$in 和 $or）是尽可能的获取更多的匹配项。
