@@ -15,6 +15,10 @@ MongoDB从零起步走之insert、remove
 
 > template  0.078GB
 
+如果存在template，就进入，如果没有，在最后保存的时候就会创建template
+
+***
+
 ###insert###
 
 发现已经创建成功，继续走，现在咱们创建一个集合,任性起名：room,再插入点数据
@@ -36,5 +40,11 @@ MongoDB从零起步走之insert、remove
 注意，在remove() 里传入了空对象{},意为删除全部数据，除了这样删除，我们还可以这样删除
 > db.room.remove({"desk":1})
 
+####Tips####
+> db.dropDatabase()
 
+删除数据库
 
+> db.collection.drop()
+
+删除集合
