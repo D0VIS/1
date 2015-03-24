@@ -156,7 +156,6 @@
        { $setDifference: [ [ "a", "b", "a" ], [ "b", "a" ] ] }	 	[ ]
        { $setDifference: [ [ "a", "b" ], [ [ "a", "b" ] ] ] }	 	[ "a", "b" ]
 
-**
 
 解释：
 * 忽略重复、顺序后，后者跟前者一样，所以空集
@@ -183,6 +182,7 @@
      )
 
 结果
+
      { "A" : [ "red", "blue" ], "B" : [ "red", "blue" ], "inBOnly" : [ ] }
      { "A" : [ "red", "blue" ], "B" : [ "blue", "red", "blue" ], "inBOnly" : [ ] }
      { "A" : [ "red", "blue" ], "B" : [ "red", "blue", "green" ], "inBOnly" : [ "green" ] }
