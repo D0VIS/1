@@ -2,7 +2,7 @@
 upsert是一个选项，它是update的第三个参数，并不是一个方法。它是一种特殊的更新，要是没有文档符合匹配，那么它就会根据条件和更新文档为基础，创建新的文档，如有匹配，则正常更新。咱们之前见到的所有update操作，都是建立在有文档的基础之上的。upsert非常方便，不必预制集合，同一套代码既可以创建又可以更新。
 
 超市需要修改商品的价格，比如将苹果的价格上调0.5元，但是店主不确定自己是否有购进苹果（偶尔会犯糊涂），那么他可以这样
-> db.supermarket.update({"name":"apple"},{$set:{"price":5.5}},true)
+> db.supermarket.update({"name":"apple"},{$set:{"price":5.5}},True)
 
 如果MongoDB之前有苹果的记录，那么就会update苹果的价格，如果没有就会创建新的文档
 > { "_id" : ObjectId("55083db0720f2a27156f66ed"), "name" : "apple", "price" : 5.5 }
