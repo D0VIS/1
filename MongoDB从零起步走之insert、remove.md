@@ -1,5 +1,8 @@
 MongoDB从零起步走之insert、remove
 ----------------
+#这里需要先启动mongodb服务器：.\mongod.exe --dbpath E:\mongodb\data\db 最后一个参数是指定数据库文件所在的位置，不指定的话会启动失败
+#启动之后会等待连接
+#这时候新开一个terminal，输入mongo 就可以连接服务器，对应服务器也会打印相应的内容
 
 连接MongoDB（bin目录下）
 >./mongo
